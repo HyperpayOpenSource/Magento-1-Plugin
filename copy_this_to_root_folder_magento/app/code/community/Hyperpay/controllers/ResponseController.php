@@ -144,7 +144,7 @@ class Hyperpay_ResponseController extends Mage_Core_Controller_Front_Action
             $order->addStatusHistoryComment($resultJson['result']['description']);
             $returnMessage .=" ( transaction id : " . $order->getIncrementId() . " )";
             $order->cancel()->save();
-            if (isset($resultJson['card']['bin'])) {
+            if (isset($resultJson['card']['bin']) && ($order->getPayment()->getMethodInstance()->getCode() != 'hyperpay_mada')) {
                 $blackBins = Mage::getModel('hyperpay/source_blackBins')->bins();
                 $searchBin = $resultJson['card']['bin'];
                 if (in_array($searchBin,$blackBins)) {
